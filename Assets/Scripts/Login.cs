@@ -60,6 +60,10 @@ public class Login : MonoBehaviour
             Debug.LogFormat("User signed in successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
             SetData();
         });
+
+        // Log an event with no parameters.
+        Firebase.Analytics.FirebaseAnalytics
+          .LogEvent(Firebase.Analytics.FirebaseAnalytics.EventLogin);
     }
 
     void SetData()
