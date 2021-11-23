@@ -8,11 +8,13 @@ public class Installer : MonoBehaviour
     
     private void Awake()
     {
-        //var loginPanelView = Instantiate(_loginPanelPrefab, _canvasParent);
-        //var loginPanelViewModel = new LoginPanelViewModel();
+        var loginPanelView = Instantiate(_loginPanelPrefab, _canvasParent);
+        var loginPanelViewModel = new LoginPanelViewModel();
 
-        //loginPanelView.SetViewModel(loginPanelViewModel);
-
+        loginPanelView.SetViewModel(loginPanelViewModel);
+        new LoginPanelController(loginPanelViewModel);
+        // aqui va el presenter
+        
         //taskRespoitory
         //var eventDispatcher = new EventDispatcherService();
     }
