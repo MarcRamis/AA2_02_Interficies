@@ -22,8 +22,15 @@ public class LoginPanelView : MonoBehaviour
                 _loginID.gameObject.SetActive(!isVisible);
             });
 
+        _viewModel
+            .TextID
+            .Subscribe((textID) => 
+            { 
+                _loginID.SetText(textID); 
+            });
+
         _loginButton.onClick.AddListener(() => {
-            _viewModel.LoginButtonPressed.Execute(_loginID.text);
+            _viewModel.LoginButtonPressed.Execute();
         }
     );
     }

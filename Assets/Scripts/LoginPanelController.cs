@@ -12,11 +12,10 @@ public class LoginPanelController
         _doLoginUseCase = doLoginUseCase;
         loginPanelViewModel.IsVisible.Value = true;
         
-        loginPanelViewModel.LoginButtonPressed.Subscribe((textID) =>
+        loginPanelViewModel.LoginButtonPressed.Subscribe((_) =>
         {
+            doLoginUseCase.Login();
             loginPanelViewModel.IsVisible.Value = false;
-            doLoginUseCase.Login(textID);
-            //loginPanelViewModel.TextID.SetValueAndForceNotify("User ID: " + textID);
         });
     }
 }

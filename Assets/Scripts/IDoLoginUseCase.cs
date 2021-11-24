@@ -1,4 +1,4 @@
 public interface IDoLoginUseCase
 {
-    void Login(string textID);
+    void Login();
 }

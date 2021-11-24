@@ -12,11 +12,11 @@ public class DoLoginUseCase : IDoLoginUseCase
         _eventDispatcherService = eventDispatcherService;
     }
 
-    public void Login(string textID)
+    public void Login()
     {
-        //var ID = _firebaseLoginService.GetID();
-
-        var logEvent = new LogEvent(textID);
+        var ID = _firebaseLoginService.GetID();
+        
+        var logEvent = new LogEvent(ID);
         _eventDispatcherService.Dispatch<LogEvent>(logEvent);
     }
 }
