@@ -1,4 +1,4 @@
-//using Code;
+using Code;
 using UnityEngine;
 
 public class Installer : MonoBehaviour
@@ -8,14 +8,23 @@ public class Installer : MonoBehaviour
     
     private void Awake()
     {
+        // Views
         var loginPanelView = Instantiate(_loginPanelPrefab, _canvasParent);
-        var loginPanelViewModel = new LoginPanelViewModel();
-
-        loginPanelView.SetViewModel(loginPanelViewModel);
-        new LoginPanelController(loginPanelViewModel);
-        // aqui va el presenter
         
-        //taskRespoitory
-        //var eventDispatcher = new EventDispatcherService();
+        // ModelViews
+        var loginPanelViewModel = new LoginPanelViewModel();
+        loginPanelView.SetViewModel(loginPanelViewModel);
+
+        // Services
+        var firebaseLoginService = new FirebaseLoginService();
+        var eventDIspatcherService = new EventDispatcherService();
+
+        // Use cases
+        var doLoginUseCase = new DoLoginUseCase(firebaseLoginService, eventDIspatcherService);
+
+        // Controllers
+        new LoginPanelController(loginPanelViewModel, doLoginUseCase);
+        // Presenters
+        new LoginPanelPresenter(loginPanelViewModel, doLoginUseCase, eventDIspatcherService);
     }
 }

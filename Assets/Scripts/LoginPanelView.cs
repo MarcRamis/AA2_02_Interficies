@@ -23,7 +23,7 @@ public class LoginPanelView : MonoBehaviour
             });
 
         _loginButton.onClick.AddListener(() => {
-            _viewModel.LoginButtonPressed.Execute();
+            _viewModel.LoginButtonPressed.Execute(_loginID.text);
         }
     );
     }

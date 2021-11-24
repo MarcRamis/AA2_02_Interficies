@@ -2,14 +2,14 @@ using UniRx;
 
 public class LoginPanelViewModel
 {
-    public readonly ReactiveCommand LoginButtonPressed;
+    public readonly ReactiveCommand<string> LoginButtonPressed;
     public readonly ReactiveProperty<bool> IsVisible;
-    //public readonly ReactiveProperty<string> TextID;
+    public readonly ReactiveProperty<string> TextID;
 
-    public LoginPanelViewModel(/*string _textId*/)
+    public LoginPanelViewModel()
     {
-        LoginButtonPressed = new ReactiveCommand();
+        LoginButtonPressed = new ReactiveCommand<string>();
         IsVisible = new ReactiveProperty<bool>();
-        //TextID = new ReactiveProperty<string>(_textId);
+        TextID = new ReactiveProperty<string>(string.Empty);
     }
 }
