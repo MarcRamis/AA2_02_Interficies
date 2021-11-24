@@ -7,6 +7,7 @@ public class LoginPanelController
     public LoginPanelController(LoginPanelViewModel loginPanelViewModel)
     {
         _loginPanelViewModel = loginPanelViewModel;
+        loginPanelViewModel.IsVisible.Value = true;
 
         loginPanelViewModel.LoginButtonPressed.Subscribe((_) =>
         {

@@ -6,7 +6,7 @@ using UniRx;
 public class LoginPanelView : MonoBehaviour
 {
     [SerializeField] private Button _loginButton;
-    //[SerializeField] private TextMeshProUGUI _loginID;
+    [SerializeField] private TextMeshProUGUI _loginID;
 
     private LoginPanelViewModel _viewModel;
 
@@ -18,7 +18,8 @@ public class LoginPanelView : MonoBehaviour
             .IsVisible
             .Subscribe((isVisible) => 
             {
-                gameObject.SetActive(isVisible);
+                _loginButton.gameObject.SetActive(isVisible);
+                _loginID.gameObject.SetActive(!isVisible);
             });
 
         _loginButton.onClick.AddListener(() => {
