@@ -11,7 +11,7 @@ public class LoginPanelController
         _loginPanelViewModel = loginPanelViewModel;
         _doLoginUseCase = doLoginUseCase;
         loginPanelViewModel.IsVisible.Value = true;
-        
+
         loginPanelViewModel.LoginButtonPressed.Subscribe((_) =>
         {
             doLoginUseCase.Login();

@@ -19,4 +19,8 @@ public class DoLoginUseCase : IDoLoginUseCase
         var logEvent = new LogEvent(ID);
         _eventDispatcherService.Dispatch<LogEvent>(logEvent);
     }
+    public bool UserExists()
+    {
+        return _firebaseLoginService.IDAppExist();
+    }
 }
