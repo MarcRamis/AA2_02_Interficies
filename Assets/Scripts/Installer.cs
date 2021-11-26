@@ -23,8 +23,8 @@ public class Installer : MonoBehaviour
         // Use cases
         var doLoginUseCase = new DoLoginUseCase(firebaseLoginService, eventDIspatcherService);
 
-        if (doLoginUseCase.UserExists()) { loginPanelViewModel.IsVisible.Value = false; }
-        else { loginPanelViewModel.IsVisible.Value = true; }    
+        //if (doLoginUseCase.UserExists()) { loginPanelViewModel.IsVisible.Value = false; }
+        //else { loginPanelViewModel.IsVisible.Value = true; }    
 
         // Controllers
         new LoginPanelController(loginPanelViewModel, doLoginUseCase);

@@ -11,7 +11,7 @@ public class DoLoginUseCase : IDoLoginUseCase
         _firebaseLoginService = firebaseLoginService;
         _eventDispatcherService = eventDispatcherService;
     }
-
+    
     public void Login()
     {
         var ID = _firebaseLoginService.GetID();
