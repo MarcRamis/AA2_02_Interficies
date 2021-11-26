@@ -1,12 +1,21 @@
 using Firebase.Firestore;
 using Firebase.Extensions;
+using Code;
+using UnityEngine;
 
 public class FirebaseLoginService : IFirebaseLoginService
 {
-    public FirebaseLoginService()
+    IEventDispatcherService eventDispatcherService;
+    public FirebaseLoginService(IEventDispatcherService _eventDispatcherService)
+    {
+        eventDispatcherService = _eventDispatcherService;
+    }
+
+    public void Init()
     {
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
+            Debug.Log("Auth");
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
@@ -19,6 +28,9 @@ public class FirebaseLoginService : IFirebaseLoginService
                 UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 //Firebase Unity SDK is not safe to use here.
             }
+            var isConnected = new LogConnectionEvent(dependencyStatus == Firebase.DependencyStatus.Available);
+            eventDispatcherService.Dispatch<LogConnectionEvent>(isConnected);
+            Debug.Log("Connected");
         });
     }
 
