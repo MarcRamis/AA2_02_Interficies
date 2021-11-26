@@ -1,5 +1,7 @@
 using Code;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public class Installer : MonoBehaviour
 {
@@ -7,6 +9,9 @@ public class Installer : MonoBehaviour
     [SerializeField] private LoginPanelView _loginPanelPrefab;
 
     IDoLoginUseCase doLoginUseCase;
+    IEventDispatcherService eventDispatcherService;
+
+    private List<IDisposable> _disposables = new List<IDisposable>();
 
     private void Awake()
     {
@@ -18,19 +23,27 @@ public class Installer : MonoBehaviour
         loginPanelView.SetViewModel(loginPanelViewModel);
 
         // Services
-        var eventDIspatcherService = new EventDispatcherService();
-        var firebaseLoginService = new FirebaseLoginService(eventDIspatcherService);
+        eventDispatcherService = new EventDispatcherService();
+        var firebaseLoginService = new FirebaseLoginService(eventDispatcherService);
 
         // Use cases
-        doLoginUseCase = new DoLoginUseCase(firebaseLoginService, eventDIspatcherService);
-        doLoginUseCase.Init();
+        doLoginUseCase = new DoLoginUseCase(firebaseLoginService, eventDispatcherService);
+        
         // Controllers
         new LoginPanelController(loginPanelViewModel, doLoginUseCase);
         // Presenters
-        new LoginPanelPresenter(loginPanelViewModel, doLoginUseCase, eventDIspatcherService);
+        new LoginPanelPresenter(loginPanelViewModel, doLoginUseCase, eventDispatcherService);
     }
     private void Start()
     {
-        
+        doLoginUseCase.Init();
+    }
+
+    private void OnDestroy()
+    {
+        foreach (IDisposable disposable in _disposables)
+        {
+            disposable.Dispose();
+        }
     }
 }
