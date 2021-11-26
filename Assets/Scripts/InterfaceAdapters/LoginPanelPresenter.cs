@@ -1,6 +1,6 @@
 using Code;
 
-public class LoginPanelPresenter 
+public class LoginPanelPresenter : Presenter
 {
     private readonly IEventDispatcherService _eventDispatcherService;
     private readonly IDoLoginUseCase _doLoginUseCase;

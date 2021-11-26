@@ -1,18 +1,15 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class ViewModel : MonoBehaviour
+public class ViewModel : IDisposable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    protected List<IDisposable> _disposables = new List<IDisposable>();
 
-    // Update is called once per frame
-    void Update()
+    public virtual void Dispose()
     {
-        
+        foreach (var disposable in _disposables)
+        {
+            disposable.Dispose();
+        }
     }
 }

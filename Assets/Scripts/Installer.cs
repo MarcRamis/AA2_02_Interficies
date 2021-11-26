@@ -25,6 +25,7 @@ public class Installer : MonoBehaviour
         // Services
         eventDispatcherService = new EventDispatcherService();
         var firebaseLoginService = new FirebaseLoginService(eventDispatcherService);
+        firebaseLoginService.Init();
 
         // Use cases
         doLoginUseCase = new DoLoginUseCase(firebaseLoginService, eventDispatcherService);
@@ -34,10 +35,10 @@ public class Installer : MonoBehaviour
         // Presenters
         new LoginPanelPresenter(loginPanelViewModel, doLoginUseCase, eventDispatcherService);
     }
-    private void Start()
-    {
-        doLoginUseCase.Init();
-    }
+    //private void Start()
+    //{
+    //    doLoginUseCase.Init();
+    //}
 
     private void OnDestroy()
     {

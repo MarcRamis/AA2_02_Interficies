@@ -13,7 +13,7 @@ public class FirebaseLoginService : IFirebaseLoginService
 
     public void Init()
     {
-        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
             Debug.Log("Auth");
             var dependencyStatus = task.Result;
@@ -32,6 +32,8 @@ public class FirebaseLoginService : IFirebaseLoginService
             eventDispatcherService.Dispatch<LogConnectionEvent>(isConnected);
             Debug.Log("Connected");
         });
+
+        eventDispatcherService.Dispatch<LogConnectionEvent>(new LogConnectionEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
     }
 
     public void LoginApp()

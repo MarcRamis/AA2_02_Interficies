@@ -1,6 +1,6 @@
 using UniRx;
 
-public class LoginPanelController
+public class LoginPanelController : Controller
 {
     LoginPanelViewModel _loginPanelViewModel;
     IDoLoginUseCase _doLoginUseCase;
@@ -11,11 +11,12 @@ public class LoginPanelController
         _loginPanelViewModel = loginPanelViewModel;
         _doLoginUseCase = doLoginUseCase;
         
-        loginPanelViewModel.IsVisible.Value = true;
-        loginPanelViewModel.LoginButtonPressed.Subscribe((_) =>
+        _loginPanelViewModel.IsVisible.Value = true;
+        _loginPanelViewModel.LoginButtonPressed.Subscribe((_) =>
         {
-            doLoginUseCase.Login();
+            _doLoginUseCase.Login();
             //loginPanelViewModel.IsVisible.Value = false;
-        });
+        })
+        .AddTo(_disposables);
     }
 }

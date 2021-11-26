@@ -3,27 +3,28 @@ using UnityEngine;
 
 public class DoLoginUseCase : IDoLoginUseCase
 {
-    private readonly IFirebaseLoginService _firebaseLoginService;
+    private readonly IFirebaseLoginService firebaseLoginService;
     private readonly IEventDispatcherService _eventDispatcherService;
 
-    public DoLoginUseCase(IFirebaseLoginService firebaseLoginService,
+    public DoLoginUseCase(IFirebaseLoginService _firebaseLoginService,
         IEventDispatcherService eventDispatcherService)
     {
-        _firebaseLoginService = firebaseLoginService;
+        firebaseLoginService = _firebaseLoginService;
         _eventDispatcherService = eventDispatcherService;
-    }
-    
-    public void Init()
-    {
-        Debug.Log("MakeInit");
-        _firebaseLoginService.Init();
         _eventDispatcherService.Subscribe<LogConnectionEvent>(AlreadyConnected);
     }
+    
+    //public void Init()
+    //{
+    //    Debug.Log("MakeInit");
+    //    _firebaseLoginService.Init();
+    //    _eventDispatcherService.Subscribe<LogConnectionEvent>(AlreadyConnected);
+    //}
     public void Login()
     {
-        _firebaseLoginService.LoginApp();
+        firebaseLoginService.LoginApp();
 
-        var ID = _firebaseLoginService.GetID();
+        var ID = firebaseLoginService.GetID();
         var logEvent = new LogEvent(ID);
         _eventDispatcherService.Dispatch<LogEvent>(logEvent);
         Debug.Log("Dispatch come from Login");
@@ -35,7 +36,7 @@ public class DoLoginUseCase : IDoLoginUseCase
         if (data.isConnected)
         {
             Debug.Log("Now is connected");
-            var ID = _firebaseLoginService.GetID();
+            var ID = firebaseLoginService.GetID();
             var logEvent = new LogEvent(ID);
             _eventDispatcherService.Dispatch<LogEvent>(logEvent);
             Debug.Log("Dispatch come from AlreadyConnected");
@@ -43,6 +44,6 @@ public class DoLoginUseCase : IDoLoginUseCase
     }
     public bool UserExists()
     {
-        return _firebaseLoginService.IDAppExist();
+        return firebaseLoginService.IDAppExist();
     }
 }
