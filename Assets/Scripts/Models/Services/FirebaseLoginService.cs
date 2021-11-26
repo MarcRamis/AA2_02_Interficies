@@ -19,18 +19,12 @@ public class FirebaseLoginService : IFirebaseLoginService
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
-                // Create and hold a reference to your FirebaseApp,
-                // where app is a Firebase.FirebaseApp property of your application class.
                 var app = Firebase.FirebaseApp.DefaultInstance;
             }
             else
             {
                 UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                //Firebase Unity SDK is not safe to use here.
             }
-            var isConnected = new LogConnectionEvent(dependencyStatus == Firebase.DependencyStatus.Available);
-            eventDispatcherService.Dispatch<LogConnectionEvent>(isConnected);
-            Debug.Log("Connected");
         });
 
         eventDispatcherService.Dispatch<LogConnectionEvent>(new LogConnectionEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
@@ -58,7 +52,7 @@ public class FirebaseLoginService : IFirebaseLoginService
     public void SetData()
     {
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-        var user = new User("Palazon", 9);
+        var user = new User("Romera", 4);
         DocumentReference docRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
 
         docRef.SetAsync(user).ContinueWithOnMainThread(task =>

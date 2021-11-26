@@ -8,11 +8,10 @@ public class Installer : MonoBehaviour
     [SerializeField] private RectTransform _canvasParent;
     [SerializeField] private LoginPanelView _loginPanelPrefab;
 
-    IDoLoginUseCase doLoginUseCase;
-    IEventDispatcherService eventDispatcherService;
+    IFirebaseLoginService firebaseLoginService;
 
     private List<IDisposable> _disposables = new List<IDisposable>();
-
+    
     private void Awake()
     {
         // Views
@@ -23,23 +22,22 @@ public class Installer : MonoBehaviour
         loginPanelView.SetViewModel(loginPanelViewModel);
 
         // Services
-        eventDispatcherService = new EventDispatcherService();
-        var firebaseLoginService = new FirebaseLoginService(eventDispatcherService);
-        firebaseLoginService.Init();
+        var eventDispatcherService = new EventDispatcherService();
+        firebaseLoginService = new FirebaseLoginService(eventDispatcherService);
 
         // Use cases
-        doLoginUseCase = new DoLoginUseCase(firebaseLoginService, eventDispatcherService);
+        var doLoginUseCase = new DoLoginUseCase(firebaseLoginService, eventDispatcherService);
         
         // Controllers
         new LoginPanelController(loginPanelViewModel, doLoginUseCase);
         // Presenters
         new LoginPanelPresenter(loginPanelViewModel, doLoginUseCase, eventDispatcherService);
     }
-    //private void Start()
-    //{
-    //    doLoginUseCase.Init();
-    //}
 
+    private void Start()
+    {
+        firebaseLoginService.Init();
+    }
     private void OnDestroy()
     {
         foreach (IDisposable disposable in _disposables)
