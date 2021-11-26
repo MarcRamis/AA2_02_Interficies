@@ -1,6 +1,5 @@
 using Firebase.Firestore;
 using Firebase.Extensions;
-using UnityEngine;
 
 public class FirebaseLoginService : IFirebaseLoginService
 {

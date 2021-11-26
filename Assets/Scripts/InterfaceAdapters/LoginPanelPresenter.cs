@@ -1,5 +1,5 @@
 using UnityEngine;
-public class LoginPanelPresenter
+public class LoginPanelPresenter : Presenter
 {
     private readonly IEventDispatcherService eventDispatcherService;
     private readonly LoginPanelViewModel viewModel;
@@ -12,7 +12,12 @@ public class LoginPanelPresenter
         eventDispatcherService.Subscribe<LogEvent>(OnLogID);
         eventDispatcherService.Subscribe<LogConnectionEvent>(ButtonVisible);
     }
-
+    public override void Dispose()
+    {
+        base.Dispose();
+        eventDispatcherService.Unsubscribe<LogEvent>(OnLogID);
+        eventDispatcherService.Unsubscribe<LogConnectionEvent>(ButtonVisible);
+    }
     private void OnLogID(LogEvent data)
     {
         viewModel.IsVisible.Value = false;
