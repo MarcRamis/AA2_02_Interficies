@@ -3,14 +3,14 @@ using UnityEngine.UI;
 using TMPro;
 using UniRx;
 
-public class LoginView : MonoBehaviour
+public class LoginPanelView : MonoBehaviour
 {
     [SerializeField] private Button loginButton;
     [SerializeField] private TextMeshProUGUI ID;
 
-    private LoginViewModel viewModel;
+    private LoginPanelViewModel viewModel;
 
-    public void SetViewModel(LoginViewModel _viewModel)
+    public void SetViewModel(LoginPanelViewModel _viewModel)
     {
         viewModel = _viewModel;
 

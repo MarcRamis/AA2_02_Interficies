@@ -18,26 +18,21 @@ public class FirebaseLoginService : IFirebaseLoginService
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
-                // Create and hold a reference to your FirebaseApp,
-                // where app is a Firebase.FirebaseApp property of your application class.º
                 var app = Firebase.FirebaseApp.DefaultInstance;
-                //Check(connection);
             }
             else
             {
                 UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 return;
-                //Firebase Unity SDK is not safe to use here.
             }
+            eventDispatcher.Dispatch(new LogConnectionEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
         });
-
-        eventDispatcher.Dispatch(new FirebaseConnection(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
     }
 
     public void Login()
     {
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        auth.SignInAnonymouslyAsync().ContinueWith(task =>
+        auth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsCanceled || task.IsFaulted)
             {
@@ -45,6 +40,7 @@ public class FirebaseLoginService : IFirebaseLoginService
             }
 
             Firebase.Auth.FirebaseUser newUser = task.Result;
+            eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
             SetData();
         });
     }
@@ -52,7 +48,7 @@ public class FirebaseLoginService : IFirebaseLoginService
     public void SetData()
     {
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-        var user = new User("Palazon", 9);
+        var user = new User("Alex", 6);
         DocumentReference docRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
 
         docRef.SetAsync(user).ContinueWithOnMainThread(task =>

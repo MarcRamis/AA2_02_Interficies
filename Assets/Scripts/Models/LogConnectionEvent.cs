@@ -1,7 +1,7 @@
-public class FirebaseConnection
+public class LogConnectionEvent
 {
     public bool isConnected;
-    public FirebaseConnection(bool _isConnected)
+    public LogConnectionEvent(bool _isConnected)
     {
         isConnected = _isConnected;
     }

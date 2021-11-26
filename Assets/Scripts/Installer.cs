@@ -3,24 +3,30 @@ using UnityEngine;
 public class Installer : MonoBehaviour
 {
     [SerializeField] private RectTransform canvasParent;
-    [SerializeField] private LoginView loginPrefab;
+    [SerializeField] private LoginPanelView loginPrefab;
 
     FirebaseLoginService firebaseLoginService;
     private void Awake()
     {
+        // Views
         var loginView = Instantiate(loginPrefab, canvasParent);
-
-        var loginViewModel = new LoginViewModel();
+        
+        // Views Models
+        var loginViewModel = new LoginPanelViewModel();
         loginView.SetViewModel(loginViewModel);
 
+        // Services
         var eventDispatcherService = new EventDispatcherService();
         firebaseLoginService = new FirebaseLoginService(eventDispatcherService);
 
+        // Use cases
         var loginUseCase = new LoginUseCase(firebaseLoginService, eventDispatcherService);
 
-        new LoginController(loginViewModel, loginUseCase);
+        // Controllers
+        new LoginPanelController(loginViewModel, loginUseCase);
 
-        new LoginPresenter(loginViewModel, loginUseCase, eventDispatcherService);
+        // Presenters
+        new LoginPanelPresenter(loginViewModel, eventDispatcherService);
     }
 
     private void Start()

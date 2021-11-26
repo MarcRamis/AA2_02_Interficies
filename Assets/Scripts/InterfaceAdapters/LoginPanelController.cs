@@ -1,11 +1,11 @@
 using UniRx;
 
-public class LoginController
+public class LoginPanelController
 {
-    private readonly LoginViewModel loginPanelViewModel;
+    private readonly LoginPanelViewModel loginPanelViewModel;
     private readonly ILoginUseCase loginUseCase;
 
-    public LoginController(LoginViewModel _loginPanelViewModel, ILoginUseCase _loginUseCase)
+    public LoginPanelController(LoginPanelViewModel _loginPanelViewModel, ILoginUseCase _loginUseCase)
     {
         loginPanelViewModel = _loginPanelViewModel;
         loginUseCase = _loginUseCase;
