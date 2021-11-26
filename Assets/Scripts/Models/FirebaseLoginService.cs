@@ -41,36 +41,6 @@ public class FirebaseLoginService : IFirebaseLoginService
 
             Firebase.Auth.FirebaseUser newUser = task.Result;
             eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
-            SetData();
-        });
-    }
-
-    public void SetData()
-    {
-        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-        var user = new User("Alex", 6);
-        DocumentReference docRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
-
-        docRef.SetAsync(user).ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted)
-                LoadData();
-        });
-    }
-
-    public void LoadData()
-    {
-        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-
-        CollectionReference usersRef = db.Collection("users");
-
-        usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
-        {
-            QuerySnapshot snapshot = task.Result;
-            foreach (DocumentSnapshot document in snapshot.Documents)
-            {
-                var user = document.ConvertTo<User>();
-            }
         });
     }
 

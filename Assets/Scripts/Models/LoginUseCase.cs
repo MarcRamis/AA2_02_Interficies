@@ -14,7 +14,6 @@ public class LoginUseCase : ILoginUseCase
     public void Login()
     {
         firebaseLoginService.Login();
-        eventDispatcherService.Dispatch(new LogEvent(firebaseLoginService.GetID()));
     }
 
     public void AlreadyConnected(LogConnectionEvent data)
