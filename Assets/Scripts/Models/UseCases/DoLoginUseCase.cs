@@ -18,7 +18,6 @@ public class DoLoginUseCase : IDoLoginUseCase
         firebaseLoginService.LoginApp();
 
         _eventDispatcherService.Dispatch<LogEvent>(new LogEvent(firebaseLoginService.GetID()));
-        Debug.Log("Dispatch come from Login");
     }
     public void AlreadyConnected(LogConnectionEvent data)
     {

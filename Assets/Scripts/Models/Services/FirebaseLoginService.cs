@@ -83,9 +83,4 @@ public class FirebaseLoginService : IFirebaseLoginService
     {
         return Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId;
     }
-
-    public bool IDAppExist()
-    {
-        return Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null;
-    }
 }
