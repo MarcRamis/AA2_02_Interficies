@@ -1,45 +1,45 @@
 using Firebase.Firestore;
 using Firebase.Extensions;
-using Code;
 using UnityEngine;
 
 public class FirebaseLoginService : IFirebaseLoginService
 {
-    IEventDispatcherService eventDispatcherService;
-    public FirebaseLoginService(IEventDispatcherService _eventDispatcherService)
+    readonly IEventDispatcherService eventDispatcher;
+
+    public FirebaseLoginService(IEventDispatcherService _eventDispatcher)
     {
-        eventDispatcherService = _eventDispatcherService;
+        eventDispatcher = _eventDispatcher;
     }
 
     public void Init()
     {
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
-            Debug.Log("Auth");
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
+                // Create and hold a reference to your FirebaseApp,
+                // where app is a Firebase.FirebaseApp property of your application class.º
                 var app = Firebase.FirebaseApp.DefaultInstance;
+                //Check(connection);
             }
             else
             {
                 UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                return;
+                //Firebase Unity SDK is not safe to use here.
             }
         });
 
-        eventDispatcherService.Dispatch<LogConnectionEvent>(new LogConnectionEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
+        eventDispatcher.Dispatch(new FirebaseConnection(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
     }
 
-    public void LoginApp()
+    public void Login()
     {
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         auth.SignInAnonymouslyAsync().ContinueWith(task =>
         {
-            if (task.IsCanceled)
-            {
-                return;
-            }
-            if (task.IsFaulted)
+            if (task.IsCanceled || task.IsFaulted)
             {
                 return;
             }
@@ -52,15 +52,13 @@ public class FirebaseLoginService : IFirebaseLoginService
     public void SetData()
     {
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-        var user = new User("Romera", 4);
+        var user = new User("Palazon", 9);
         DocumentReference docRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
 
         docRef.SetAsync(user).ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted)
-            {
                 LoadData();
-            }
         });
     }
 
@@ -69,6 +67,7 @@ public class FirebaseLoginService : IFirebaseLoginService
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
 
         CollectionReference usersRef = db.Collection("users");
+
         usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             QuerySnapshot snapshot = task.Result;

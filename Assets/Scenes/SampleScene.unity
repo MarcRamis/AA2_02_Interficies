@@ -315,8 +315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32aeddb6145fe141ae936ce4f17abbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvasParent: {fileID: 1353364667}
-  _loginPanelPrefab: {fileID: -5738031562306062219, guid: ec19736f37ca7e249a318b62b5ca36ec, type: 3}
+  canvasParent: {fileID: 1353364667}
+  loginPrefab: {fileID: -5738031562306062219, guid: ec19736f37ca7e249a318b62b5ca36ec, type: 3}
 --- !u!1 &1353364663
 GameObject:
   m_ObjectHideFlags: 0

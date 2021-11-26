@@ -1,48 +1,30 @@
-using Code;
 using UnityEngine;
-using System;
-using System.Collections.Generic;
 
 public class Installer : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasParent;
-    [SerializeField] private LoginPanelView _loginPanelPrefab;
+    [SerializeField] private RectTransform canvasParent;
+    [SerializeField] private LoginView loginPrefab;
 
-    IFirebaseLoginService firebaseLoginService;
-
-    private List<IDisposable> _disposables = new List<IDisposable>();
-    
+    FirebaseLoginService firebaseLoginService;
     private void Awake()
     {
-        // Views
-        var loginPanelView = Instantiate(_loginPanelPrefab, _canvasParent);
-        
-        // ModelViews
-        var loginPanelViewModel = new LoginPanelViewModel();
-        loginPanelView.SetViewModel(loginPanelViewModel);
+        var loginView = Instantiate(loginPrefab, canvasParent);
 
-        // Services
+        var loginViewModel = new LoginViewModel();
+        loginView.SetViewModel(loginViewModel);
+
         var eventDispatcherService = new EventDispatcherService();
         firebaseLoginService = new FirebaseLoginService(eventDispatcherService);
 
-        // Use cases
-        var doLoginUseCase = new DoLoginUseCase(firebaseLoginService, eventDispatcherService);
-        
-        // Controllers
-        new LoginPanelController(loginPanelViewModel, doLoginUseCase);
-        // Presenters
-        new LoginPanelPresenter(loginPanelViewModel, doLoginUseCase, eventDispatcherService);
+        var loginUseCase = new LoginUseCase(firebaseLoginService, eventDispatcherService);
+
+        new LoginController(loginViewModel, loginUseCase);
+
+        new LoginPresenter(loginViewModel, loginUseCase, eventDispatcherService);
     }
 
     private void Start()
     {
         firebaseLoginService.Init();
-    }
-    private void OnDestroy()
-    {
-        foreach (IDisposable disposable in _disposables)
-        {
-            disposable.Dispose();
-        }
     }
 }

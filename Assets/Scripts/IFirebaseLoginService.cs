@@ -1,7 +1,6 @@
 public interface IFirebaseLoginService
 {
-    void Init();
-    void LoginApp();
+    void Login();
     string GetID();
     void SetData();
     void LoadData();
