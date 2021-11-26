@@ -20,7 +20,7 @@ public class Installer : MonoBehaviour
         firebaseLoginService = new FirebaseLoginService(eventDispatcherService);
 
         // Use cases
-        var loginUseCase = new LoginUseCase(firebaseLoginService, eventDispatcherService);
+        var loginUseCase = new DoLoginUseCase(firebaseLoginService, eventDispatcherService);
 
         // Controllers
         new LoginPanelController(loginViewModel, loginUseCase);

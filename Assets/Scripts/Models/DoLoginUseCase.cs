@@ -1,10 +1,10 @@
 using UnityEngine;
-public class LoginUseCase : ILoginUseCase
+public class DoLoginUseCase : IDoLoginUseCase
 {
     private readonly IFirebaseLoginService firebaseLoginService;
     private readonly IEventDispatcherService eventDispatcherService;
-
-    public LoginUseCase(IFirebaseLoginService _firebaseLoginService, IEventDispatcherService _eventDispatcherService)
+    
+    public DoLoginUseCase(IFirebaseLoginService _firebaseLoginService, IEventDispatcherService _eventDispatcherService)
     {
         firebaseLoginService = _firebaseLoginService;
         eventDispatcherService = _eventDispatcherService;
